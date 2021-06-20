@@ -1,0 +1,36 @@
+* {
+
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+nav a {
+    font-size: 20px;
+}
+
+nav h1 {
+    font-size: 20px;
+    font-weight: lighter;
+}
+
+section h2 {
+    text-align: center;
+}
+
+section div p {
+    text-align: center;
+}
+
+section div button {
+    margin: auto;
+    display: block;
+    color: white;
+    background-color: purple;
+    border-radius: 5px;
+}
+
+
