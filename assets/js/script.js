@@ -1,3 +1,4 @@
+// Grabbing HTML elements and assigning them to variables
 var startButton = document.getElementById('start-btn');
 var quiz = document.getElementById('quiz');
 var rules = document.getElementById('rules');
@@ -8,13 +9,23 @@ var answer2 = document.getElementById('answer2');
 var answer3 = document.getElementById('answer3');
 var answer4 = document.getElementById('answer4');
 var result = document.getElementById('result');
+var timer = document.getElementById('timer');
+var gameOver = document.getElementById('game-over');
+var initials = document.getElementById('initials');
 
+// Setting global variables to be used in functions
+var currentQuestion = 0;
+var secondsLeft = 60;
+var score = secondsLeft;
+
+// Event listeners for when these buttons are clicked
 startButton.addEventListener('click', startGame);
 answer1.addEventListener('click', selectAnswer1);
 answer2.addEventListener('click', selectAnswer2);
 answer3.addEventListener('click', selectAnswer3);
 answer4.addEventListener('click', selectAnswer4);
 
+// Array containing objects that contain the question objects and the answers which are stored in an array with objects for each answers
 var questions = [
     {
         question: {
@@ -78,9 +89,7 @@ var questions = [
     }
 ];
 
-var currentQuestion = questions[0];
-
-
+// This is ran when the start button is pressed. Hides unnecessary UI elements and shows necessary UI elements for the game. Starts timer and shows first question.
 function startGame() {
     startButton.classList.add('hide');
     quiz.classList.add('hide');
@@ -89,74 +98,118 @@ function startGame() {
     question.classList.remove('hide');
     answers.classList.remove('hide');
 
+    startTimer();
     showQuestion();
 }
 
+// Sets the timer to 60 seconds and starts the countdown
+function startTimer() {
+
+    timer.textContent = "Time: " + secondsLeft;
+      // Sets interval in variable
+  var timerInterval = setInterval(function() {
+    secondsLeft--;
+
+    timer.textContent = "Time: " + secondsLeft;
+
+    if (currentQuestion == questions.length) {
+        clearInterval(timerInterval);
+    }
+
+    if(secondsLeft === 0) {
+
+        // Stops execution of action at set interval
+        clearInterval(timerInterval);
+        // Determines the game is over
+        nextQuestion();
+        
+    }
+
+  }, 1000);
+
+}
+
+//  Function that is called when the first answer button is clicked
 function selectAnswer1() {
     
-    if (questions[0].answer[0].correct) {
+    if (questions[currentQuestion].answer[0].correct) {
         result.classList.remove('hide');
         result.innerText = "Correct!";
         result.style.color = "green";
-
+        currentQuestion++;
         nextQuestion();
     } else {
         result.classList.remove('hide');
         result.innerText = "Wrong!";
         result.style.color = "red";
+        currentQuestion++;
+        secondsLeft -= 10;
         nextQuestion();
     }
 
 }
 
+//  Function that is called when the second answer button is clicked
 function selectAnswer2() {
     
-    if (questions[0].answer[1].correct) {
+    if (questions[currentQuestion].answer[1].correct) {
         result.classList.remove('hide');
         result.innerText = "Correct!";
         result.style.color = "green";
+        currentQuestion++;
         nextQuestion();
     } else {
         result.classList.remove('hide');
         result.innerText = "Wrong!";
         result.style.color = "red";
+        currentQuestion++;
+        secondsLeft -= 10;
         nextQuestion();
     }
 
 }
 
+//  Function that is called when the third answer button is clicked
 function selectAnswer3() {
     
-    if (questions[0].answer[2].correct) {
+    if (questions[currentQuestion].answer[2].correct) {
         result.classList.remove('hide');
         result.innerText = "Correct!";
         result.style.color = "green";
+        currentQuestion++;
         nextQuestion();
     } else {
         result.classList.remove('hide');
         result.innerText = "Wrong!";
         result.style.color = "red";
+        currentQuestion++;
+        secondsLeft -= 10;
         nextQuestion();
     }
 
 }
 
+//  Function that is called when the fourth answer button is clicked
 function selectAnswer4() {
     
-    if (questions[0].answer[3].correct) {
+    if (questions[currentQuestion].answer[3].correct) {
         result.classList.remove('hide');
         result.innerText = "Correct!";
         result.style.color = "green";
+        currentQuestion++;
         nextQuestion();
     } else {
         result.classList.remove('hide');
         result.innerText = "Wrong!";
         result.style.color = "red";
+        currentQuestion++;
+        secondsLeft -= 10;
         nextQuestion();
     }
 
 }
 
+// Shows the first question
 function showQuestion () {
 
     question.innerText = questions[0].question.text;
@@ -166,6 +219,7 @@ function showQuestion () {
     answer4.innerText = questions[0].answer[3].text;
 
     if (answer1.click == true) {
+        console.log('test');
         selectAnswer1(); 
     }
 
@@ -183,49 +237,24 @@ function showQuestion () {
 
 }
 
+// Shows the next question and determines if the game is over if no questions remain
 function nextQuestion() {
 
-    if (questions[0].question.answered == true) {
-        question.innerText = questions[1].question.text;
-        answer1.innerText = questions[1].answer[0].text;
-        answer2.innerText = questions[1].answer[1].text;
-        answer3.innerText = questions[1].answer[2].text;
-        answer4.innerText = questions[1].answer[3].text;
-    } else if (questions[1].question.answered == true) {
-        question.innerText = questions[2].question.text;
-        answer1.innerText = questions[2].answer[0].text;
-        answer2.innerText = questions[2].answer[1].text;
-        answer3.innerText = questions[2].answer[2].text;
-        answer4.innerText = questions[2].answer[3].text;
-    } else if (questions[2].question.answered == true) {
-        question.innerText = questions[3].question.text;
-        answer1.innerText = questions[3].answer[0].text;
-        answer2.innerText = questions[3].answer[1].text;
-        answer3.innerText = questions[3].answer[2].text;
-        answer4.innerText = questions[3].answer[3].text;
-    } else if (questions[3].question.answered == true) {
-        question.innerText = questions[4].question.text;
-        answer1.innerText = questions[4].answer[0].text;
-        answer2.innerText = questions[4].answer[1].text;
-        answer3.innerText = questions[4].answer[2].text;
-        answer4.innerText = questions[4].answer[3].text;
-    }
+    if (currentQuestion == questions.length) {
 
+        question.classList.add('hide');
+        answers.classList.add('hide');
+        gameOver.classList.remove('hide');
+        initials.textContent = "Your final score is " + secondsLeft;
 
-    if (answer1.click == true) {
-        selectAnswer1(); 
-    }
+    } else {
 
-    if (answer2.click == true) {
-        selectAnswer1(); 
-    }
+        question.innerText = questions[currentQuestion].question.text;
+        answer1.innerText = questions[currentQuestion].answer[0].text;
+        answer2.innerText = questions[currentQuestion].answer[1].text;
+        answer3.innerText = questions[currentQuestion].answer[2].text;
+        answer4.innerText = questions[currentQuestion].answer[3].text;
 
-    if (answer3.click == true) {
-        selectAnswer1(); 
-    }
-
-    if (answer4.click == true) {
-        selectAnswer1(); 
     }
 
 }
