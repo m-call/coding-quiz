@@ -12,6 +12,8 @@ var result = document.getElementById('result');
 var timer = document.getElementById('timer');
 var gameOver = document.getElementById('game-over');
 var initials = document.getElementById('initials');
+var finScore = document.getElementById('score');
+var initial = document.getElementById('initial');
 
 // Setting global variables to be used in functions
 var currentQuestion = 0;
@@ -24,6 +26,7 @@ answer1.addEventListener('click', selectAnswer1);
 answer2.addEventListener('click', selectAnswer2);
 answer3.addEventListener('click', selectAnswer3);
 answer4.addEventListener('click', selectAnswer4);
+finScore.addEventListener('click', highScore);
 
 // Array containing objects that contain the question objects and the answers which are stored in an array with objects for each answers
 var questions = [
@@ -247,6 +250,7 @@ function nextQuestion() {
         gameOver.classList.remove('hide');
         initials.textContent = "Your final score is " + secondsLeft;
 
+
     } else {
 
         question.innerText = questions[currentQuestion].question.text;
@@ -257,4 +261,9 @@ function nextQuestion() {
 
     }
 
+}
+
+function highScore() {
+    localStorage.setItem("initials", initial);
+    localStorage.setItem("score", secondsLeft);
 }

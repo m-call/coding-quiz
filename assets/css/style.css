@@ -1,4 +1,10 @@
 /* Element selectors */
+h1 {
+    text-align: center;
+    font-size: 20px;
+    font-weight: lighter;
+}
+
 nav {
     display: flex;
     align-items: center;
