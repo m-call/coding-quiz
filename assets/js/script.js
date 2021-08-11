@@ -13,7 +13,8 @@ var timer = document.getElementById('timer');
 var gameOver = document.getElementById('game-over');
 var initials = document.getElementById('initials');
 var finScore = document.getElementById('score');
-var initial = document.getElementById('initial');
+var initial = document.getElementById('initial').value;
+var highScores = document.getElementById('high-scores');
 
 // Setting global variables to be used in functions
 var currentQuestion = 0;
@@ -119,8 +120,8 @@ function startTimer() {
         clearInterval(timerInterval);
     }
 
-    if(secondsLeft === 0) {
-
+    if(secondsLeft <= 0) {
+        secondsLeft = 1;
         // Stops execution of action at set interval
         clearInterval(timerInterval);
         // Determines the game is over
@@ -147,6 +148,9 @@ function selectAnswer1() {
         result.style.color = "red";
         currentQuestion++;
         secondsLeft -= 10;
+        if (secondsLeft <= 0) {
+            secondsLeft = 1;
+        }
         nextQuestion();
     }
 
@@ -167,6 +171,9 @@ function selectAnswer2() {
         result.style.color = "red";
         currentQuestion++;
         secondsLeft -= 10;
+        if (secondsLeft <= 0) {
+            secondsLeft = 1;
+        }
         nextQuestion();
     }
 
@@ -187,6 +194,9 @@ function selectAnswer3() {
         result.style.color = "red";
         currentQuestion++;
         secondsLeft -= 10;
+        if (secondsLeft <= 0) {
+            secondsLeft = 1;
+        }
         nextQuestion();
     }
 
@@ -207,6 +217,9 @@ function selectAnswer4() {
         result.style.color = "red";
         currentQuestion++;
         secondsLeft -= 10;
+        if (secondsLeft <= 0) {
+            secondsLeft = 1;
+        }
         nextQuestion();
     }
 
@@ -243,12 +256,12 @@ function showQuestion () {
 // Shows the next question and determines if the game is over if no questions remain
 function nextQuestion() {
 
-    if (currentQuestion == questions.length) {
+    if (currentQuestion == questions.length || secondsLeft === 0 || secondsLeft === 1) {
 
         question.classList.add('hide');
         answers.classList.add('hide');
         gameOver.classList.remove('hide');
-        initials.textContent = "Your final score is " + secondsLeft;
+        initials.textContent = "Your final score is " + (secondsLeft - 1);
 
 
     } else {
@@ -263,7 +276,13 @@ function nextQuestion() {
 
 }
 
+// Sets the initials and high score to local storage to be displayed on high scores page
 function highScore() {
+    console.log(initial);
     localStorage.setItem("initials", initial);
     localStorage.setItem("score", secondsLeft);
+    var li1 = document.createElement("li");
+    var li2 = document.createElement("li");
+    li1.textContent = localStorage.getItem("initials");
+    li2.textContent = localStorage.getItem("score")
 }
